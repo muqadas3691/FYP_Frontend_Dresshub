@@ -1,5 +1,6 @@
-"use client"
+ "use client"
 
+import { Suspense } from "react"
 import { useState, useEffect } from "react"
 import TopBanner from "@/app/components/global/top-banner"
 import { ClothingCard } from "../../../components/global/clothing-card"
@@ -19,7 +20,6 @@ interface Product {
   images: string[]
   productListing: string
   category: string
-  // Add other fields as needed
 }
 
 interface ProductResponse {
@@ -34,9 +34,9 @@ interface Filters {
   maxPrice: number
 }
 
-export default function Home() {
+// Component that uses useSearchParams
+function ProductsContent() {
   const search = useSearchParams()
-  // const type = search.get("type") || "buy"
   const [showPolicy, setShowPolicy] = useState(true)
   const [showFilters, setShowFilters] = useState(false)
   const [products, setProducts] = useState<Product[]>([])
@@ -52,15 +52,12 @@ export default function Home() {
     setError(null)
 
     try {
-      // const productListing = type === "buy" ? "sale" : "rent"
-
       let url = `${process.env.NEXT_PUBLIC_LOOP_SERVER}/product/getAllProducts?limit=10&page=1`
       if (filters.categories.length > 0) {
         const categoryQuery = filters.categories.map(encodeURIComponent).join(',');
         url += `&category=${categoryQuery}`;
       }
       
-
       if (filters.maxPrice < 200000) {
         url += `&max=${filters.maxPrice}`
       }
@@ -90,11 +87,11 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F6E7DB]">
+    <>
       <TopBanner back={true} />
       <SubHeader showSearch={false} />
 
-      {showPolicy &&  (
+      {showPolicy && (
         <div className="w-full bg-[#F6E7DB]">
           <RentersPolicy onClose={() => setShowPolicy(false)} />
         </div>
@@ -171,7 +168,17 @@ export default function Home() {
 
       <RenterPolicyBanner />
       <FooterBanner />
-    </main>
+    </>
   )
 }
 
+// Main page component with Suspense
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-[#F6E7DB]">
+      <Suspense fallback={<div className="flex justify-center items-center h-screen">Loading products...</div>}>
+        <ProductsContent />
+      </Suspense>
+    </main>
+  )
+}
