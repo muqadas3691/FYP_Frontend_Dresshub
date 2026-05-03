@@ -1,5 +1,6 @@
-"use client"
+ "use client"
 
+import { Suspense } from "react"
 import { useState } from "react"
 import TopBanner from "@/app/components/global/top-banner"
 import { ClothingCard } from "../../../components/global/clothing-card"
@@ -12,7 +13,8 @@ import { FilterSheet } from "@/app/components/global/filter-sheet"
 import { RenterPolicyBanner } from "@/app/components/global/renter-policy-banner"
 import { useSearchParams } from "next/navigation"
 
-export default function Home() {
+// Component that uses useSearchParams
+function DescriptionContent() {
   const search = useSearchParams()
   const type = search.get('type')
   const [showPolicy, setShowPolicy] = useState(true)
@@ -92,7 +94,7 @@ export default function Home() {
   ]
 
   return (
-    <main className="h-screen bg-[#F6E7DB]">
+    <>
       <TopBanner back={true} />
       <SubHeader showSearch={true} />
 
@@ -132,7 +134,17 @@ export default function Home() {
       </div>
       <RenterPolicyBanner/>
       <FooterBanner />
-    </main>
+    </>
   )
 }
 
+// Main page component with Suspense boundary
+export default function Home() {
+  return (
+    <main className="h-screen bg-[#F6E7DB]">
+      <Suspense fallback={<div className="flex justify-center items-center h-screen">Loading...</div>}>
+        <DescriptionContent />
+      </Suspense>
+    </main>
+  )
+}
