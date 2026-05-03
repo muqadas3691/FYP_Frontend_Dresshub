@@ -7,10 +7,9 @@ import { ProductDetails } from "./component/product-detail"
 import { SubHeader } from "@/app/components/global/sub-header"
 import { ProductSlider } from "@/app/components/global/product-slider"
 import FooterBanner from "@/app/components/global/footer-banner"
-import { products } from "@/lib/data"
 import { Loader2 } from "lucide-react"
 import { ToastContainer } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
+ 
 
 // Define the Product type
 interface Product {

@@ -7,10 +7,8 @@ import { useEffect, useState, useRef } from "react"
 import ProductsSection from "./components/Home/ui/products-section"
 import VideoSection from "./components/Home/ui/video-section"
 import AboutSection from "./components/Home/ui/about-section"
-import LoopWearBanner from "./components/Home/ui/dresshub-banner"
 import TopBanner from "./components/global/top-banner"
 import HeaderDropdown from "./components/global/header-dropdwon"
-import { logo } from "@/lib/data"
 import DressHubBanner from "./components/Home/ui/dresshub-banner"
 
 interface Review {
